@@ -4,7 +4,10 @@
 
 #include "ArenaBattle.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "ABPawn.generated.h"
+
+//폰의 요소 : 
 
 UCLASS()
 class ARENABATTLE_API AABPawn : public APawn
@@ -29,4 +32,24 @@ public:
 	virtual void PostInitializeComponents() override;
 	//폰이 플레이어 컨트롤러에 빙의된 시점
 	virtual void PossessedBy(AController* aController) override;
+public:
+	//시각적 요소 -> 애니메이션(스켈레탈 매쉬)
+	UPROPERTY(VisibleAnywhere, Category = Visual)
+	USkeletalMeshComponent* Mesh;
+	//충돌 (인간형 : 캡슐)
+	UPROPERTY(VisibleAnywhere, Category = Collision)
+	UCapsuleComponent* Capsule;
+	//움직임 요소
+	UPROPERTY(VisibleAnywhere, Category = Movement)
+	UFloatingPawnMovement* Movement;
+	//네비게이션(AI길찾기, 장판 깔아서 위에서 최소거리를 찾아 돌아다니는 A* 알고리즘 이용)
+
+	//카메라
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, Category = Camera)
+	UCameraComponent* Camera;
+private:
+	void UpDown(float NewAxisValue);
+	void LeftRight(float NewAxisValue);
 };
